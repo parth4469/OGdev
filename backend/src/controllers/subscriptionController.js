@@ -21,6 +21,8 @@ const deleteSubscription = async (req, res) => {
   res.json({ message: "Deleted" });
 };
 
+const { analyzeTransactions: analyzeTransactionsLogic } = require('../services/transactionAnalysisService');
+
 const uploadSubscriptions = async (req, res) => {
   try {
     if (!req.file) {
@@ -32,36 +34,39 @@ const uploadSubscriptions = async (req, res) => {
 
     // Reusable function to validate and insert data
     const processData = async (dataArray) => {
-      let totalCost = 0;
-      const validSubscriptions = [];
+      // 1. Format noisy inputs
+      const formattedInput = dataArray.map(row => ({
+        description: row.description || row.name || row.merchant || '',
+        amount: row.amount || row.cost || row.price || 0,
+        date: row.date || row.timestamp || new Date()
+      }));
 
-      dataArray.forEach(row => {
-        // Only insert rows that have a name and cost
-        // Coerce cost into a Number
-        const rowCost = Number(row.cost);
-        if (row.name && !isNaN(rowCost)) {
-          validSubscriptions.push({
-            userId: req.user,
-            name: row.name.trim(),
-            cost: rowCost,
-            billingCycle: row.billingCycle || 'monthly',
-            lastUsed: row.lastUsed ? new Date(row.lastUsed) : new Date()
-          });
-          totalCost += rowCost;
-        }
-      });
+      // 2. Use our smart engine to extract valid subscriptions out of the noisy raw array
+      const analysisResult = analyzeTransactionsLogic(formattedInput);
 
-      if (validSubscriptions.length === 0) {
+      if (!analysisResult.subscriptions || analysisResult.subscriptions.length === 0) {
         return res.status(400).json({ status: 'error', message: 'No valid subscription data found in file.' });
       }
 
+      // 3. Prepare data for MongoDB
+      const validSubscriptions = analysisResult.subscriptions.map(sub => ({
+        userId: req.user,
+        name: sub.name,
+        cost: sub.cost,
+        billingCycle: sub.billingCycle,
+        lastUsed: sub.lastUsed
+      }));
+
+      // 4. Bulk insert confirmed subscriptions
       await Subscription.insertMany(validSubscriptions);
 
+      // 5. Build clean, structured response for the dashboard
       res.status(201).json({
-        status: 'success',
-        message: 'File processed successfully',
-        insertedCount: validSubscriptions.length,
-        totalCostAdded: totalCost
+        totalMonthlySpend: analysisResult.totalMonthlySpend,
+        subscriptions: analysisResult.subscriptions,
+        hiddenSubscriptions: analysisResult.hiddenSubscriptions,
+        wastedMoney: analysisResult.wastedMoney,
+        suggestions: analysisResult.suggestions
       });
     };
 
