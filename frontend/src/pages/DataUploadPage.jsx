@@ -14,10 +14,10 @@ const DataUploadPage = () => {
     setIsUploading(true);
     setError(null);
     try {
-      await uploadTransactions(file);
-      navigate('/dashboard');
+      const response = await uploadTransactions(file);
+      navigate('/dashboard', { state: { analysisData: response } });
     } catch (err) {
-      setError('Failed to analyze the file. Please try submitting again.');
+      setError(typeof err === 'string' ? err : 'Failed to analyze the file. Please try submitting again.');
       setIsUploading(false);
     }
   };

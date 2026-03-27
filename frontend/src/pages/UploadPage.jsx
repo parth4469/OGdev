@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import StatCard from '../components/StatCard';
 import HistorySection from '../components/HistorySection';
 import HelpSection from '../components/HelpSection';
-import { getDashboardData } from '../services/api';
+import { getLandingStats } from '../services/api';
 import { MdAccountBalanceWallet, MdDateRange, MdTrendingDown } from 'react-icons/md';
 import './UploadPage.css';
 
@@ -17,7 +17,7 @@ const UploadPage = () => {
     window.scrollTo(0, 0);
     const fetchStats = async () => {
       try {
-        const data = await getDashboardData();
+        const data = await getLandingStats();
         setStats(data);
       } catch (err) {
         console.error("Failed to load global stats", err);

@@ -1,27 +1,44 @@
-// Dummy API service returning promises resolving to mock data
+import axios from 'axios';
 
+const API_BASE = 'http://localhost:3000/api';
+
+/**
+ * Uploads bank transaction file to the O(N) AI Backend Engine.
+ * @param {File} file - CSV or JSON file containing transactions
+ * @returns {Promise<Object>} The analyzed subscription data
+ */
 export const uploadTransactions = async (file) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      // Simulate successful upload
-      resolve({ status: 'success', message: 'File analyzed successfully.' });
-    }, 1500);
-  });
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post(`${API_BASE}/ai/analyze-transactions`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    // The backend wraps responses in `status: 'success'` and flat properties
+    if (response.data && response.data.status === 'success') {
+      return response.data;
+    }
+    throw new Error('Analysis failed or returned unexpected format.');
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error.response?.data?.message || error.message;
+  }
 };
 
-export const getDashboardData = async () => {
+/**
+ * Fallback static data for the Landing Page (UploadPage.jsx)
+ * Provides attractive numbers for unauthenticated visitors.
+ */
+export const getLandingStats = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         totalMonthlySpend: 15499,
         totalYearlySpend: 185988,
-        potentialSavings: 3450,
-        categoryBreakdown: [
-          { name: 'Entertainment', value: 4500 },
-          { name: 'SaaS / Tools', value: 3200 },
-          { name: 'Utility', value: 5000 },
-          { name: 'Food/Delivery', value: 2799 },
-        ],
         topSubscriptions: [
           { name: 'AWS Cloud', spend: 2000 },
           { name: 'Netflix', spend: 649 },
@@ -30,48 +47,7 @@ export const getDashboardData = async () => {
           { name: 'Gym', spend: 1500 },
         ]
       });
-    }, 800);
-  });
-};
-
-export const getSubscriptions = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, name: 'Netflix Premium', amount: 649, category: 'Entertainment', tag: 'Expensive', date: '4th of every month' },
-        { id: 2, name: 'Spotify Premium', amount: 119, category: 'Entertainment', tag: 'Essential', date: '12th of every month' },
-        { id: 3, name: 'AWS Cloud Services', amount: 2000, category: 'SaaS / Tools', tag: 'Expensive', date: '1st of every month' },
-        { id: 4, name: 'Zomato Gold', amount: 299, category: 'Food/Delivery', tag: 'Rare', date: '15th of every month' },
-        { id: 5, name: 'Canva Pro', amount: 499, category: 'SaaS / Tools', tag: 'Essential', date: '22nd of every month' },
-        { id: 6, name: 'Gym Membership', amount: 1500, category: 'Utility', tag: 'Essential', date: '5th of every month' },
-      ]);
-    }, 1000);
-  });
-};
-
-export const getInsights = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { 
-          id: 1, 
-          type: 'warning', 
-          message: 'You are spending heavily on Entertainment. Consider reviewing your active plans.' 
-        },
-        { 
-          id: 2, 
-          type: 'savings', 
-          message: 'Cancel Zomato Gold since you have barely ordered anything this month.',
-          action: 'Cancel Zomato Gold',
-          savingsAmount: '₹299/month'
-        },
-        { 
-          id: 3, 
-          type: 'info', 
-          message: 'Your SaaS spends are consistent and look well optimized.' 
-        }
-      ]);
-    }, 1200);
+    }, 600);
   });
 };
 
