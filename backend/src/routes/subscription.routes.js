@@ -11,7 +11,7 @@ const {
 } = require('../controllers/subscriptionController');
 
 router.post('/', auth, addSubscription);
-router.post('/upload', auth, upload.single('file'), uploadSubscriptions);
+router.post('/upload', upload.single('file'), uploadSubscriptions);
 router.get('/', auth, getSubscriptions);
 router.delete('/:id', auth, deleteSubscription);
 module.exports = router;
