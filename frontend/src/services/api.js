@@ -29,36 +29,4 @@ export const uploadTransactions = async (file) => {
   }
 };
 
-/**
- * Fallback static data for the Landing Page (UploadPage.jsx)
- * Provides attractive numbers for unauthenticated visitors.
- */
-export const getLandingStats = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        totalMonthlySpend: 15499,
-        totalYearlySpend: 185988,
-        topSubscriptions: [
-          { name: 'AWS Cloud', spend: 2000 },
-          { name: 'Netflix', spend: 649 },
-          { name: 'Zomato Gold', spend: 299 },
-          { name: 'Spotify', spend: 119 },
-          { name: 'Gym', spend: 1500 },
-        ]
-      });
-    }, 600);
-  });
-};
 
-export const getFileHistory = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: '1', filename: 'jan_statements.csv', date: '2026-01-05', status: 'Analyzed' },
-        { id: '2', filename: 'feb_statements.csv', date: '2026-02-03', status: 'Analyzed' },
-        { id: '3', filename: 'mar_statements.csv', date: '2026-03-01', status: 'Analyzed' },
-      ]);
-    }, 600);
-  });
-};

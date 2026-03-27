@@ -2,30 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import StatCard from '../components/StatCard';
-import HistorySection from '../components/HistorySection';
-import HelpSection from '../components/HelpSection';
-import { getLandingStats } from '../services/api';
 import { MdAccountBalanceWallet, MdDateRange, MdTrendingDown } from 'react-icons/md';
 import './UploadPage.css';
 
 const UploadPage = () => {
-  const [stats, setStats] = useState(null);
-  const [loadingStats, setLoadingStats] = useState(true);
   const navigate = useNavigate();
+  // We simulate strict auth state context. In production, this pulls from a session variable or Redux store.
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [statsData, setStatsData] = useState(null); 
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const fetchStats = async () => {
-      try {
-        const data = await getLandingStats();
-        setStats(data);
-      } catch (err) {
-        console.error("Failed to load global stats", err);
-      } finally {
-        setLoadingStats(false);
-      }
-    };
-    fetchStats();
   }, []);
 
   const handleAnalyze = () => {
@@ -104,6 +91,7 @@ const UploadPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="hero-btn-secondary"
+            onClick={handleAnalyze}
           >
             Try Demo
           </motion.button>
@@ -119,43 +107,44 @@ const UploadPage = () => {
         className="visual-separator separator-indigo"
       />
       
-      {/* Features Grid */}
+      {/* 
+        CONDITIONAL RENDERING: 
+        Only show the 3 stat cards if user is BOTH logged in and has verified data.
+        If not, strictly fall back to explaining what they COULD see securely.
+      */}
       <section className="features-section" id="features">
-        {loadingStats ? (
-          <div className="stats-loader">Initializing intelligence core...</div>
-        ) : stats ? (
+        {isLoggedIn && statsData ? (
           <div className="stats-grid">
             <StatCard 
               title="Active Subscriptions" 
-              amount={stats.topSubscriptions.length} 
+              amount={statsData?.subscriptions?.length || 0} 
               type="info"
               icon={<MdAccountBalanceWallet size={20} />} 
             />
             <StatCard 
               title="Monthly Spend" 
-              amount={stats.totalMonthlySpend} 
+              amount={statsData?.totalMonthlySpend || 0} 
               type="expense"
               icon={<MdAccountBalanceWallet size={20} />} 
             />
             <StatCard 
               title="Yearly Estimate" 
-              amount={stats.totalYearlySpend} 
+              amount={(statsData?.totalMonthlySpend || 0) * 12} 
               type="warning"
               icon={<MdDateRange size={20} />} 
             />
           </div>
-        ) : null}
-      </section>
-
-      {/* Analyzer Block (Secondary CTA) */}
-      <section className="analyzer-section" id="analyzer">
-        <div className="cta-content glass-card">
-          <h2>Continuous Monitoring</h2>
-          <p>Link your accounts securely. SubSlasher runs quietly in the background catching auto-renews before they charge you.</p>
-          <button className="analyze-cta-btn" onClick={handleAnalyze}>
-            <span className="btn-text">Connect Bank Account</span>
-          </button>
-        </div>
+        ) : (
+          <div className="empty-state-cta">
+            <h3 className="empty-state-title">No Active Session Data</h3>
+            <p className="empty-state-text">
+              Log in and <strong>Upload your statement</strong> to see your secure financial insights populated here.
+            </p>
+            <button className="analyze-cta-btn secondary-bounce" onClick={handleAnalyze}>
+              <span>Secure Login</span>
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Visual Separator */}
@@ -166,44 +155,6 @@ const UploadPage = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="visual-separator separator-violet"
       />
-
-      {/* Demo Cards Preview */}
-      <section className="demo-preview-section">
-        <h3 className="section-title text-glow">Detection Engine Demo</h3>
-        <div className="demo-cards-container">
-          <div className="demo-card mock-actionable">
-            <div className="demo-header">
-              <span className="demo-badge">Savings Opportunity</span>
-            </div>
-            <h4>Cancel Zomato Gold</h4>
-            <p>You’ve only ordered once this month. Unsubscribe to save <strong>₹299/mo</strong>.</p>
-          </div>
-          <div className="demo-card mock-warning">
-            <div className="demo-header">
-              <span className="demo-badge warning">Price Hike Detected</span>
-            </div>
-            <h4>Netflix Premium</h4>
-            <p>Your subscription increased from ₹499 to ₹649 this billing cycle.</p>
-          </div>
-          <div className="demo-card mock-analytics">
-             <div className="demo-header">
-              <span className="demo-badge info">Spending Habit</span>
-            </div>
-            <h4>Heavy SaaS Spend</h4>
-            <p>40% of your outgoings are categorized as SaaS/Tools.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom Grid */}
-      <div className="home-bottom-grid">
-        <section className="history-section-wrapper" id="history">
-          <HistorySection />
-        </section>
-        <section className="help-section-wrapper" id="help">
-          <HelpSection />
-        </section>
-      </div>
 
     </div>
   );
