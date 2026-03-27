@@ -35,10 +35,6 @@ const Sidebar = () => {
           <MdNotifications className="nav-icon" />
           <span className="nav-label">Notifications</span>
         </button>
-        <button className="nav-action profile-action">
-          <MdAccountCircle className="nav-icon" />
-          <span className="nav-label">John Doe</span>
-        </button>
       </div>
     </aside>
   );
