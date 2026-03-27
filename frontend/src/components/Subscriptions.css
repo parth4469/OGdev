@@ -1,0 +1,127 @@
+.subscription-list {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.list-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.subscription-card {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-fast);
+  background-color: var(--bg-card);
+}
+
+.subscription-card:hover {
+  background-color: var(--bg-color);
+  border-color: var(--text-secondary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.sub-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sub-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.sub-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.sub-amount-area {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.sub-amount {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.sub-interval {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-left: 0.1rem;
+}
+
+.sub-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.sub-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tag-expensive { background-color: var(--danger-bg); color: #991b1b; }
+.tag-essential { background-color: var(--success-bg); color: #065f46; }
+.tag-rare { background-color: var(--warning-bg); color: #b45309; }
+
+.cancel-btn {
+  background-color: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--border-radius-md);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.cancel-btn:hover {
+  background-color: var(--danger-bg);
+}
+
+@media (max-width: 768px) {
+  .subscription-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .sub-amount-area {
+    justify-content: flex-start;
+  }
+  
+  .sub-actions {
+    justify-content: space-between;
+  }
+}

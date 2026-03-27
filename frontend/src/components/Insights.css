@@ -1,0 +1,116 @@
+.insight-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1rem;
+  background-color: var(--bg-card);
+  border-left: 4px solid var(--primary-color);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.insight-card:hover {
+  transform: translateX(4px);
+}
+
+.insight-warning { border-left-color: var(--warning-color); background-color: var(--warning-bg); }
+.insight-savings { border-left-color: var(--success-color); background-color: var(--success-bg); }
+.insight-info { border-left-color: var(--primary-color); background-color: rgba(59, 130, 246, 0.15); }
+
+.insight-icon {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+.insight-warning .insight-icon { color: var(--warning-color); }
+.insight-savings .insight-icon { color: var(--success-color); }
+
+.insight-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.insight-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.insight-message {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Savings Card */
+.savings-card {
+  background: linear-gradient(to right, var(--bg-card), var(--success-bg));
+  border: 1px solid var(--success-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.savings-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.savings-icon-wrapper {
+  background-color: var(--success-bg);
+  color: var(--success-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.savings-title {
+  color: var(--success-color);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.savings-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.savings-action-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed var(--success-color);
+  padding-top: 1rem;
+}
+
+.savings-amount {
+  font-weight: 700;
+  color: var(--success-color);
+  font-size: 1.125rem;
+}
+
+.savings-btn {
+  background-color: var(--success-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.savings-btn:hover {
+  background-color: #059669; /* deeper green */
+}
