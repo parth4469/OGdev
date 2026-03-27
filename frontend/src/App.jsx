@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import UploadPage from './pages/UploadPage'; // Actually the Landing Page now
 import DataUploadPage from './pages/DataUploadPage';
 import Dashboard from './pages/Dashboard';
@@ -11,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         
         {/* Protected/Layout routes wrapped in Header/Footer block */}
         <Route path="/" element={
