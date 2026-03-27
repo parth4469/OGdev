@@ -16,9 +16,7 @@ const KNOWN_SUBSCRIPTIONS = {
   'airtel': { normalized: 'Airtel', category: 'Utilities' }
 };
 
-/**
- * Normalizes description and checks if it's a known service
- */
+
 const normalizeMerchant = (description) => {
   const descLower = description.toLowerCase();
   for (const [key, meta] of Object.entries(KNOWN_SUBSCRIPTIONS)) {
@@ -26,7 +24,7 @@ const normalizeMerchant = (description) => {
       return { name: meta.normalized, category: meta.category, isKnown: true };
     }
   }
-  // Fallback: clean up noisy characters and return a capitalized version
+
   const clean = description.replace(/[^a-zA-Z\s]/g, '').trim().split(' ')[0];
   return { 
     name: clean ? (clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase()) : 'Unknown', 
@@ -138,12 +136,12 @@ const analyzeTransactions = (transactions) => {
       subscriptions.push(sub);
       totalMonthlySpend += sub.cost;
 
-      // Hidden subscriptions: Not known or very low confidence but showing recurring signs
+      
       if (!group.isKnown && confidence < 0.9) {
         hiddenSubscriptions.push(sub);
       }
 
-      // Wasted Money logic: If the most recent transaction was over 45 days ago
+      
       const daysSinceLast = Math.ceil(Math.abs(today - lastUsed) / (1000 * 60 * 60 * 24));
       if (daysSinceLast > 45) {
         wastedMoney += sub.cost;
@@ -152,7 +150,7 @@ const analyzeTransactions = (transactions) => {
     }
   }
 
-  // 3. Generate Holistic Suggestions
+  
   if (subscriptions.length > 5) {
     suggestions.push(`You have ${subscriptions.length} active subscriptions. Consider combining similar services to save money.`);
   }
