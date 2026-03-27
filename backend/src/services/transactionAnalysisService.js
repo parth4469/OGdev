@@ -136,12 +136,12 @@ const analyzeTransactions = (transactions) => {
       subscriptions.push(sub);
       totalMonthlySpend += sub.cost;
 
-      
+      // Hidden subscriptions: Not known or very low confidence but showing recurring signs
       if (!group.isKnown && confidence < 0.9) {
         hiddenSubscriptions.push(sub);
       }
 
-      
+      // Wasted Money logic: If the most recent transaction was over 45 days ago
       const daysSinceLast = Math.ceil(Math.abs(today - lastUsed) / (1000 * 60 * 60 * 24));
       if (daysSinceLast > 45) {
         wastedMoney += sub.cost;
