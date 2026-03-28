@@ -1,6 +1,6 @@
-const Subscription = require('../models/susbscription.models');
+const Subscription = require('../models/subscription.model');
 const { analyzeData } = require('../services/ai.service');
-const { analyzeTransactions: analyzeTransactionsLogic } = require('../services/transactionAnalysisService');
+const { analyzeTransactions: analyzeTransactionsLogic } = require('../services/transactionAnalysis.service');
 const stream = require('stream');
 const csvParser = require('csv-parser');
 

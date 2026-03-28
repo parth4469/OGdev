@@ -1,4 +1,4 @@
-const Subscription = require('../models/susbscription.models');
+const Subscription = require('../models/subscription.model');
 const stream = require('stream');
 const csvParser = require('csv-parser');
 
@@ -21,7 +21,7 @@ const deleteSubscription = async (req, res) => {
   res.json({ message: "Deleted" });
 };
 
-const { analyzeTransactions: analyzeTransactionsLogic } = require('../services/transactionAnalysisService');
+const { analyzeTransactions: analyzeTransactionsLogic } = require('../services/transactionAnalysis.service');
 
 const uploadSubscriptions = async (req, res) => {
   try {

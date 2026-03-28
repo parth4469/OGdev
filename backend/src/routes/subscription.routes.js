@@ -8,7 +8,7 @@ const {
   getSubscriptions,
   deleteSubscription,
   uploadSubscriptions
-} = require('../controllers/subscriptionController');
+} = require('../controllers/subscriptions.controller.');
 
 router.post('/', auth, addSubscription);
 router.post('/upload', upload.single('file'), uploadSubscriptions);
